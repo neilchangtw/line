@@ -1,0 +1,63 @@
+spring:
+  application:
+    name: tccschat-msg-line
+  profiles:
+    active: DEV
+  datasource:
+     url: jdbc:postgresql://10.101.26.135:6666/tccschat
+     username: sa
+     password: Aa123456
+     driver-class-name: org.postgresql.Driver
+     hikari:
+       connectionTimeout: 30000
+       idle-timeout: 60000
+       max-lifetime: 1200000
+       maximum-pool-size: 30
+  mail:
+    host: 172.17.120.159
+    port: 25
+    properties:
+      mail:
+        smtp:
+          auth: false
+    username: tccschat-ap@testritegroup.com
+    default-encoding: UTF-8
+    protocol: smtp
+  servlet:
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 50MB
+
+server:
+  servlet:
+    context-path: /
+  port: 3010
+
+########################################################
+### KeyCloak 配置
+########################################################
+keycloak:
+  auth-server-url: https://authempsit02.testritegroup.com/auth
+  realm: testritegroup-employee
+  resource: css-api
+  ssl-required: external
+  public-client: true
+  cors: true
+  bearer-only: true
+  securityConstraints:
+    - authRoles: ROLE_SYSTEM
+      securityCollections:
+        - patterns:
+            - /sendMessage/*
+    - authRoles: ROLE_EMPLOYEE
+      securityCollections:
+        - patterns:
+            - /sendMessage/*
+
+########################################################
+### line bot 配置
+########################################################
+line.bot:
+  channel-token: 9CAmKbV2srn5TzYo+PYEQoju+Y5kAnia+LyQvBv9lyBf4tvQYjfXySZLaUZE21pupZ/v1XncHAVLIGO6t6JxVg8icw9AYqVVd4oe9zI973RvL/IWA7sUeoVSqvoNa0lZoDN1W5AIEgv2xRSbWigRjQdB04t89/1O/w1cDnyilFU=
+  channel-secret: aa04c5db4b93b232f53358ff8b4912a3
+  handler.path: /callback
